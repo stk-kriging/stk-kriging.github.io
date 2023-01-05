@@ -1,10 +1,5 @@
 # STK: a Small (Matlab/Octave) Toolbox for Kriging
 
-[![license](https://img.shields.io/github/license/stk-kriging/stk)](COPYING)
-[![last commit](https://img.shields.io/github/last-commit/stk-kriging/stk/master)](https://github.com/stk-kriging/stk/commits/main)
-[![unit tests](https://github.com/stk-kriging/stk/actions/workflows/run-tests.yml/badge.svg)](https://github.com/stk-kriging/stk/actions/workflows/run-tests.yml)
-[![run-linter](https://github.com/stk-kriging/stk/actions/workflows/run-linter.yml/badge.svg)](https://github.com/stk-kriging/stk/actions/workflows/run-linter.yml)
-
 This README file is part of
 
 *STK: a Small (Matlab/Octave) Toolbox for Kriging*  
@@ -28,7 +23,7 @@ along with STK.  If not, see <http://www.gnu.org/licenses/>.
 
    Version:      2.7.0 (2022-02-23)
 
-   Authors:      See AUTHORS.md file
+   Authors:      See [AUTHORS](./AUTHORS.md) file
 
    Maintainers:  Julien Bect <julien.bect@centralesupelec.fr>
                  and Emmanuel Vazquez <emmanuel.vazquez@centralesupelec.fr>
