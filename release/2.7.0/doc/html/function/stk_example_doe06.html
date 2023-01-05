@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="24-Feb-2022"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_EXAMPLE_DOE06  Sequential design for the estimation of an excursion set
+
+ In this example, we consider the problem of estimating the set
+
+    Gamma = { x in X | f(x) > z_crit },
+
+ where z_crit is a given value, and/or its volume.
+
+ In a typical "structural reliability analysis" problem, Gamma would
+ represent the failure region of a certain system, and its volume would
+ correspond to the probability of failure (assuming a uniform distribution
+ for the input).
+
+ A Matern 5/2 prior with known parameters is used for the function f, and
+ the evaluations points are chosen sequentially using any of the sampling
+ criterion described in [1] (see also [2], section 4.3).
+
+ REFERENCE
+
+   [1] B. Echard, N. Gayton and M. Lemaire (2011).   AK-MCS: an active
+       learning reliability method combining Kriging and Monte Carlo
+       simulation.  Structural Safety, 33(2), 145-154.
+
+   [2] J. Bect, D. Ginsbourger, L. Li, V. Picheny and E. Vazquez (2012).
+       Sequential design of computer experiments for the estimation of a
+       probability of failure.  Statistics and Computing, 22(3), 773-793.
+</pre>
+
+</div>
+</body>
+</html>

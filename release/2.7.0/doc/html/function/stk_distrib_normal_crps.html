@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="24-Feb-2022"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_DISTRIB_NORMAL_CRPS computes the CRPS for Gaussian predictive distributions
+
+ CALL: CRPS = stk_distrib_normal_crps (Z, MU, SIGMA)
+
+    computes the Continuous Ranked Probability Score (CRPS) of Z with respect
+    to a Gaussian predictive distribution with mean MU and standard deviation
+    SIGMA.
+
+    The CRPS is defined as the integral of the Brier score for the event
+    {Z <= z}, when z ranges from -inf to +inf:
+
+       CRPS = int_{-inf}^{+inf} [Phi((z - MU)/SIGMA) - u(z - Z)]^2 dz,
+
+    where Phi is the normal cdf and u the Heaviside step function.  The CRPS
+    is equal to zero if, and only if, the predictive distribution is a Dirac
+    distribution (SIGMA = 0) and the observed value is equal to the predicted
+    value (Z = MU).
+
+ REFERENCE
+
+   [1] Tilmann Gneiting and Adrian E. Raftery, "Strictly proper scoring
+       rules, prediction, and estimation", Journal of the American
+       Statistical Association, 102(477):359-378, 2007.
+
+ See also: stk_distrib_normal_cdf, stk_predict_leaveoneout
+</pre>
+
+</div>
+</body>
+</html>

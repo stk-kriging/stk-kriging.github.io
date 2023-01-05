@@ -1,0 +1,50 @@
+{
+  "generator": "generate_html",
+  "generator_version": "0.3.2",
+  "date_generated": "2022-02-24",
+  "package": 
+  {
+    "name": "stk",
+    "version": "2.7.0",
+    "description": "The STK is a (not so) Small Toolbox for Kriging. Its primary  focus is on the interpolation/regression technique known as kriging, which  is very closely related to Splines and Radial Basis Functions, and can be  interpreted as a non-parametric Bayesian method using a Gaussian Process  (GP) prior. The STK also provides tools for the sequential and  non-sequential design of experiments. Even though it is, currently, mostly  geared towards the Design and Analysis of Computer Experiments (DACE), the  STK can be useful for other applications areas (such as Geostatistics,  Machine Learning, Non-parametric Regression, etc.).",
+    "shortdescription": "The STK is a (not so) Small Toolbox for Kriging",
+    "date": "2022-02-23",
+    "title": "STK: A Small Toolbox for Kriging",
+    "author": "See AUTHORS.md file",
+    "maintainer": "Julien BECT <julien.bect@centralesupelec.fr>  and Emmanuel VAZQUEZ <emmanuel.vazquez@centralesupelec.fr>",
+    "buildrequires": "",
+    "systemrequirements": "",
+    "license": "GPLv3+",
+    "url": "https://github.com/stk-kriging/stk/",
+    "depends": 
+    {
+      "octave": ">= 4.0.0"
+    }
+  },
+  "html": 
+  {
+    "config": 
+    {
+      "has_overview": true,
+      "has_alphabetical_data": false,
+      "has_short_description": false,
+      "has_news": true,
+      "has_package_doc": false,
+      "has_index": true,
+      "has_license": true,
+      "has_website_files": false,
+      "has_demos": true
+    },
+    "paths": 
+    {
+      "function_help_dir": "function",
+      "overview_file": "overview.html",
+      "alphabetical_database_dir": "",
+      "short_description_file": "",
+      "news_file": "NEWS.html",
+      "package_doc_dir": "",
+      "index_file": "index.html",
+      "copying_file": "COPYING.html"
+    }
+  }
+}
