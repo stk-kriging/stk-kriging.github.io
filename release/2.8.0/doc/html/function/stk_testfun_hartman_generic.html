@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="07-Jan-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_TESTFUN_HARTMAN_GENERIC compute the value of a Hartman function
+
+ CALL: Y = stk_testfun_hartman_generic (X, A, P, C)
+ 
+    computes the value Y of the Hartman function with parameters A, P, C,
+    at the points contained in X.
+
+    The size of Y is N x 1, where N is the number of rows of X.
+
+    The parameters A, P and C should have size N x D, N x D and 1 x D
+    respectively, where D is the number of columns of X.
+
+ HISTORICAL NOTE
+
+    This class of test functions has been introduced by Hartman [2],
+    hence the name.  The particular form of Hartman functions considered
+    here, however, seems to have been introduced by [1].
+
+    The only difference between the particular form considered in [1] and
+    the general form in [2] is that the weighting matrix for the quadratic
+    form in the exponential is assumed to be diagonal.
+
+ REFERENCES
+
+  [1] L. C. W. Dixon & G. P. Szego (1978).  Towards Global
+      Optimization 2, North-Holland, Amsterdam, The Netherlands
+
+  [2] J. K. Hartman (1973).  Some experiments in global optimization.
+      Naval Research Logistics Quarterly, 20(3):569-576.
+
+  [3] V. Picheny, T. Wagner & D. Ginsbourger (2013).  A benchmark
+      of kriging-based infill criteria for noisy optimization.
+      Structural and Multidisciplinary Optimization, 48:607-626.
+
+  [4] MCS: Global Optimization by Multilevel Coordinate Search.
+      Version 2.0 from Feb. 8, 2000.  Retrieved on March 10, 2022,
+      from https://www.mat.univie.ac.at/~neum/software/mcs/
+
+  [5] S. Surjanovic & D. Bingham.  Virtual Library of Simulation
+      Experiments: Test Functions and Datasets.  Retrieved March 3,
+      2022, https://www.sfu.ca/~ssurjano/hart4.html.
+
+ See also stk_testfun_hartman3, stk_testfun_hartman4, stk_testfun_hartman6
+</pre>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="07-Jan-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_TEST performs tests for a given M-file.
+
+ FIXME (ticket #86): Convert help text below to plain text
+
+ -*- texinfo -*-
+ @deftypefn  {Command} {} test @var{name}
+ @deftypefnx {Command} {} test @var{name} quiet|normal|verbose
+ @deftypefnx {Function File} {} test ('@var{name}', 'quiet|normal|verbose', @var{fid})
+ @deftypefnx {Function File} {} test ([], 'explain', @var{fid})
+ @deftypefnx {Function File} {@var{success} =} test (@dots{})
+ @deftypefnx {Function File} {[@var{n}, @var{max}] =} test (@dots{})
+ @deftypefnx {Function File} {[@var{code}, @var{idx}] =} test ('@var{name}', 'grabdemo')
+
+ Perform tests from the first file in the loadpath matching @var{name}.
+ @code{test} can be called as a command or as a function.  Called with
+ a single argument @var{name}, the tests are run interactively and stop
+ after the first error is encountered.
+
+ With a second argument the tests which are performed and the amount of
+ output is selected.
+
+ @table @asis
+ @item 'quiet'
+  Don't report all the tests as they happen, just the errors.
+
+ @item 'normal'
+ Report all tests as they happen, but don't do tests which require
+ user interaction.
+
+ @item 'verbose'
+ Do tests which require user interaction.
+ @end table
+
+ The argument @var{fid} can be used to allow batch processing.  Errors
+ can be written to the already open file defined by @var{fid}, and
+ hopefully when Octave crashes this file will tell you what was happening
+ when it did.  You can use @code{stdout} if you want to see the results as
+ they happen.  You can also give a file name rather than an @var{fid}, in
+ which case the contents of the file will be replaced with the log from
+ the current test.
+
+ Called with a single output argument @var{success}, @code{test} returns
+ true if all of the tests were successful.  Called with two output arguments
+ @var{n} and @var{max}, the number of successful tests and the total number
+ of tests in the file @var{name} are returned.
+
+ If the second argument is 'explain', then @var{name} is ignored and an
+ explanation of the line markers used is written to the file @var{fid}.
+ @seealso{assert, error, example}
+ @end deftypefn
+</pre>
+
+</div>
+</body>
+</html>

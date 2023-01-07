@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="07-Jan-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_EXAMPLE_MISC04  Pareto front simulation
+
+ DESCRIPTION
+
+   We consider a bi-objective optimization problem, where the objective
+   functions are modeled as a pair of independent stationary Gaussian
+   processes with a Matern 5/2 anisotropic covariance function.
+
+   Figure (a): represent unconditional realizations of the Pareto front and
+      and estimate of the probability of being non-dominated at each point
+      of the objective space.
+
+   Figure (b): represent conditional realizations of the Pareto front and
+      and estimate of the posteriorior probability of being non-dominated
+      at each point of the objective space.
+
+ EXPERIMENTAL FUNCTION WARNING
+
+    This script uses the stk_plot_probdom2d function, which is currently
+    considered an experimental function.  Read the help for more information.
+
+ REFERENCE
+
+  [1] Michael Binois, David Ginsbourger and Olivier Roustant,  Quantifying
+      uncertainty on Pareto fronts with Gaussian Process conditional simu-
+      lations,  European J. of Operational Research, 2043(2):386-394, 2015.
+
+ See also: stk_plot_probdom2d
+</pre>
+
+</div>
+</body>
+</html>

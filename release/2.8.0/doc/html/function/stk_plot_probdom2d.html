@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="07-Jan-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_PLOT_PROBDOM2D represents the uncertainty about a 2D Pareto
+
+ CALL: stk_plot_probdom2d (MODEL1, MODEL2, BOX)
+
+    represents the uncertainty about the 2D Pareto front associated with the
+    minimization of models MODEL1 and MODEL2 over the domain BOX.
+
+    Use prior model structures (see stk_model) to represent prior uncertainty.
+
+    Use @stk_model_gpposterior objects to represent posterior uncertainty.
+
+ EXPERIMENTAL FUNCTION WARNING
+
+    This function is currently considered experimental.  Because of the very
+    basic method used to choose the simulation points (uniform IID sampling),
+    the plots produced by this function are very unreliable representations
+    on the residual uncertainty on the Pareto front (except perhaps on low-
+    dimensional problems of moderate difficulty).
+
+    STK users that wish to experiment with it are welcome to do so, but should
+    be aware of this limitation.  We invite them to direct any questions,
+    remarks or comments about this experimental class to the STK mailing list.
+
+ REFERENCE
+
+  [1] Michael Binois, David Ginsbourger and Olivier Roustant,  Quantifying
+      uncertainty on Pareto fronts with Gaussian Process conditional simu-
+      lations,  European J. of Operational Research, 2043(2):386-394, 2015.
+
+ See also: stk_example_misc04, stk_model, stk_gpposterior
+</pre>
+
+</div>
+</body>
+</html>

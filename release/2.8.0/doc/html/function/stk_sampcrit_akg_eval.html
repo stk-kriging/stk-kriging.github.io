@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="07-Jan-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_SAMPCRIT_AKG_EVAL computes the Approximate KG criterion
+
+ CALL: AKG = stk_sampcrit_akg_eval (ZC_MEAN, ZC_STD, ZR_MEAN, ZR_STD, ZCR_COV)
+
+    computes the value AKG of the Approximate KG criterion for a set of
+    candidates points, with respect to a certain reference grid.  The
+    predictive distributions of the objective function (to be minimized) at
+    the candidates and reference points is assumed to be jointly Gaussian,
+    with mean ZC_MEAN and standard deviation ZC_STD for the candidate points,
+    mean ZR_MEAN and satandard deviation ZR_STD on the reference points, and
+    covariance matrix ZCR_COV between the candidate and reference points.
+    The input argument must have the following sizes:
+
+       * ZC_MEAN    M x 1,
+       * ZC_STD     M x 1,
+       * ZR_MEAN    L x 1,
+       * ZR_STD     L x 1,
+       * ZCR_COV    M x L,
+
+    where M is the number of candidate points and L the number of reference
+    points.  The output has size M x 1.
+
+ NOTE ABOUT THE "KNOWLEDGE GRADIENT" CRITERION
+
+    The "Knowlegde Gradient" (KG) criterion is the one-step look-ahead (a.k.a
+    myopic) sampling criterion associated to the problem of estimating the
+    minimizer of the objective function under the L^1 loss (equivalently,
+    under the linear loss/utility).
+
+    This sampling strategy was proposed for the first time in the work of
+    Mockus and co-authors in the 70's (see [1] and refs therein), for the case
+    of noiseless evaluations, but only applied to particular Brownian-like
+    processes for which the minimum of the posterior mean coincides with the
+    best evaluations so far (in which case the KG criterion coincides with the
+    EI criterion introduced later by Jones et al [2]).
+
+    It was later discussed for the case of a finite space with independent
+    Gaussian priors first by Gupta and Miescke [3] and then by Frazier et al
+    [4] who named it "knowledge gradient".  It was extended to the case of
+    correlated priors by Frazier et al [5].
+
+ NOTE ABOUT THE REFERENCE SET
+
+    For the case of continuous input spaces, there is no exact expression of
+    the KG criterion.  The approximate KG criterion proposed in this function
+    is an approximation of the KG criterion where the continuous 'min' in the
+    expression of the criterion at the i^th candidate point are replaced by
+    discrete mins over some reference grid *augmented* with the i^th candidate
+    point.
+
+    This type of approximation has been proposed by Scott et al [6] under the
+    name "knowledge gradient for continuous parameters" (KGCP).  In [6], the
+    reference grid is composed of the current set of evaluation points.  The
+    implementation proposed in STK leaves this choice to the user.
+
+    Note that, with the reference grid proposed in [6], the complexity of one
+    evaluation of the AKG (KGCP) criterion increases as O(N log N), where N
+    denotes the number of evaluation points.
+
+ NOTE ABOUT THE NOISELESS CASE
+
+    Simplified formulas are available for the noiseless case (see [7]) but not
+    currenly implemented in STK.
+
+ REFERENCES
+
+   [1] J. Mockus, V. Tiesis and A. Zilinskas. The application of Bayesian
+       methods for seeking the extremum. In L.C.W. Dixon and G.P. Szego, eds,
+       Towards Global Optimization, 2:117-129, North Holland NY, 1978.
+
+   [2] D. R. Jones, M. Schonlau and William J. Welch. Efficient global
+       optimization of expensive black-box functions.  Journal of Global
+       Optimization, 13(4):455-492, 1998.
+
+   [3] S. Gupta and K. Miescke,  Bayesian look ahead one-stage sampling
+       allocations for selection of the best population,  J. Statist. Plann.
+       Inference, 54:229-244, 1996.
+
+   [4] P. I. Frazier, W. B. Powell, S. Dayanik,  A knowledge gradient policy
+       for sequential information collection,  SIAM J. Control Optim.,
+       47(5):2410-2439, 2008.
+
+   [5] P. I. Frazier, W. B. Powell, and S. Dayanik.  The Knowledge-Gradient
+       Policy for Correlated Normal Beliefs.  INFORMS Journal on Computing
+       21(4):599-613, 2009.
+
+   [6] W. Scott, P. I. Frazier and W. B. Powell.  The correlated knowledge
+       gradient for simulation optimization of continuous parameters using
+       Gaussian process regression.  SIAM J. Optim, 21(3):996-1026, 2011.
+
+   [7] J. van der Herten, I. Couckuyt, D. Deschrijver, T. Dhaene,  Fast
+       Calculation of the Knowledge Gradient for Optimization of Deterministic
+       Engineering Simulations,  arXiv preprint arXiv:1608.04550
+
+ See also: STK_SAMPCRIT_EI_EVAL
+</pre>
+
+</div>
+</body>
+</html>
