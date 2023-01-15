@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="12-Oct-2019"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_EXAMPLE_MISC05  Parameter estimation for heteroscedastic noise variance
+
+ DESCRIPTION
+
+    We consider a 1d prediction problem with noisy data, where the variance of
+    the noise depends on the input location.
+
+    A simple heteroscedastic model is used, where the only parameter to be
+    estimated is a dispersion parameter (the square of a scale parameter).
+    More preciesely, the variance of the noise is assumed to be of the form
+
+       tau^2(x) = phi * (x + 1) ^ 2,
+
+    and the dispersion parameter phi is estimated together with the parameters
+    of the covariance function.
+
+ EXPERIMENTAL FEATURE WARNING
+
+    This script demonstrates an experimental feature of STK (namely, gaussian
+    noise model objects).  STK users that wish to experiment with it are
+    welcome to do so, but should be aware that API-breaking changes are likely
+    to happen in future releases.  We invite them to direct any questions,
+    remarks or comments about this experimental feature to the STK mailing
+    list.
+
+ See also: stk_example_kb09
+</pre>
+
+</div>
+</body>
+</html>

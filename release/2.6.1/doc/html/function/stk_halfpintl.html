@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="12-Oct-2019"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_HALFPINTL computes an intersection of lower half-planes
+
+ CALL: [A, B, Z] = stk_halfpintl (A, B)
+
+    computes the intersection of the lower half-planes defined by the vector
+    of slopes A and the vector of intercepts B.  The output vectors A and B
+    contain the slopes and intercept of the lines that actually contribute to
+    the boundary of the intersection, sorted in such a way that the k^th
+    element corresponds to the k^th piece of the piecewise affine boundary.
+    The output Z contains the intersection points (shorter by one element).
+
+ ALGORITHM
+
+    The algorithm implemented in this function is described in [1, 2].
+
+ REFERENCE
+
+   [1] P. I. Frazier, W. B. Powell, and S. Dayanik.  The Knowledge-Gradient
+       Policy for Correlated Normal Beliefs.  INFORMS Journal on Computing
+       21(4):599-613, 2009.
+
+   [2] W. Scott, P. I. Frazier and W. B. Powell.  The correlated knowledge
+       gradient for simulation optimization of continuous parameters using
+       Gaussian process regression.  SIAM J. Optim, 21(3):996-1026, 2011.
+</pre>
+
+</div>
+</body>
+</html>
