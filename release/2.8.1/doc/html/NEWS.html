@@ -1,0 +1,1347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="01-Jul-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="index.html">
+        <img src="images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<h2 class="tbdesc">NEWS for 'stk' Package</h2>
+
+<p><a href="index.html">Return to the 'stk' package</a></p>
+
+<h1>Changes in version 2.8.1</h1>
+
+<h2>Parameter estimation</h2>
+
+<ul>
+<li><code>@stk_optim_octavesqp/stk_minimize_boxconstrained.m</code>: Catch sqp
+errors and return the best point found so far.</li>
+</ul>
+
+<h2>Maintainer tools</h2>
+
+<ul>
+<li><p><code>stk_runtests.m</code>: Optionnally, save the result to a mat-file.</p></li>
+<li><p><code>stk_runtests_allmatlabs.m</code>: Run the test suite on all available
+versions of Matlab.</p></li>
+<li><p><code>admin/build_tools</code>: Simplify HTML doc build (we no longer need to
+build a documentation for Octave Forge).</p></li>
+</ul>
+
+<h1>Changes in version 2.8.0</h1>
+
+<h2>Required Matlab/Octave version</h2>
+
+<ul>
+<li><p>Minimal (tested) Matlab version number has been raised to R2014a.</p></li>
+<li><p>Required Octave version number has been raised to 4.0.1.
+(There are known problems with 4.0.0.)</p></li>
+</ul>
+
+<h2>Test functions</h2>
+
+<ul>
+<li><p><code>stk_testfun_hartman3.m</code>, <code>stk_testfun_hartman6.m</code>: New test
+functions ("Hartman3" and "Hartman6") from the Dixon &amp; Szego (1978)
+benchmark.</p></li>
+<li><p><code>stk_testfun_hartman4.m</code>: New test function ("Hartman4") based on
+Picheny et al (2013), with a different scaling.</p></li>
+<li><p>Most test functions in <code>examples/test_functions</code> are now also
+available under the CC0 license (see each file).</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.7.0</h1>
+
+<h2>Required Matlab/Octave version</h2>
+
+<ul>
+<li><p>Required Matlab version number has been raised to R2009b.</p></li>
+<li><p>Required Octave version number has been raised to 4.0.0.</p></li>
+</ul>
+
+<h2>Prediction</h2>
+
+<ul>
+<li><p><code>stk_predict.m</code> now officially supports a shorter calling syntax:</p>
+
+<pre><code>[zp, ...] = skt_predict (model, x_prd)
+</code></pre>
+
+<p>that can be used either to compute predictions from any type of
+model (proper prior model structures, posterior model object,
+(experimental) noise model objects, etc.).</p></li>
+<li><p><code>@stk_model_gpposterior/stk_predict.m</code>: no longer exists.  The base
+<code>stk_predict</code> function now provides the recommended interface for
+all possible types of models, and then dispatches to the (new)
+internal function <code>stk_predict_</code> to do the actual computations (but
+do not rely on it directly, since this is an internal function).</p></li>
+</ul>
+
+<h2>Models</h2>
+
+<ul>
+<li><code>get_input_data</code>, <code>get_output_data</code>, <code>get_prior_model</code>: Removed
+(these getters were already deprecated, cf. STK 2.6.0 release notes).</li>
+</ul>
+
+<h2>Arrays</h2>
+
+<ul>
+<li><p><code>stk_dataframe</code> arrays now possess a <code>sample_size</code> property, which
+can be read using the usual dot-indexing notation or through the
+(slightly faster) getter <code>stk_get_sample_size</code>.</p></li>
+<li><p><code>stk_model_gpposterior</code> objects also have a <code>sample_size</code> property,
+which corresponds to the sample size of the underlying data set and
+can be read similarly.</p></li>
+<li><p><code>stk_length</code>: deprecated (use <code>stk_get_sample_size</code> instead).</p></li>
+<li><p><code>@stk_model_gpposterior/stk_{set,get}_optimizable_parameters.m</code>: Fix
+a bug (erroneous property name).</p></li>
+</ul>
+
+<h2>Sequential design of experiments</h2>
+
+<ul>
+<li><code>@stk_sampcrit_akg/set.m</code>: Remove replicated input points when the AKG
+reference grid is construted using Scott's original method (i.e., taking
+past observations points plus the candidate point).</li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+<li><p><code>stk_example_kb07.m</code>: Add a second figure where nu is fixed to 5/2
+and rho varies.</p></li>
+<li><p><code>stk_example_doe05.m</code>: Make it possible to use the exact KG criterion
+instead of Scott's approximation (previously, only the latter was
+proposed).</p></li>
+<li><p><code>stk_example_doe06.m</code>: New example script, which illustrates a
+simple sequential design strategy to estimate an excursion set
+(failure region) and its volume (probability of failure).</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_init.m</code>: Make STK startup faster.</p></li>
+<li><p><code>startup.m</code>: Run <code>stk_init</code> automatically for in-place use.</p></li>
+<li><p><code>stk_select_optimizer.m</code>, <code>stk_optim_hasfmincon.m</code>: Removed
+(had been deprecated since 2015, and were never part of the public API).</p></li>
+<li><p><code>README.md</code>: Explain how to initialize STK when using the Parallel
+Computing Toolbox in Matlab, by means of the <code>pctRunOnAll</code> function.</p></li>
+<li><p>Internal: source formatting, comments, etc.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.6.1</h1>
+
+<h2>Documentation</h2>
+
+<ul>
+<li><p><code>stk_factorialdesign</code>: Provide missing help text.
+(<a href="https://sourceforge.net/p/kriging/tickets/91/">ticket #91</a>)</p></li>
+<li><p>Fix HTML doc (<code>INDEX</code> structure was broken).</p></li>
+</ul>
+
+<h1>Changes in version 2.6.0</h1>
+
+<h2>Required Octave version</h2>
+
+<ul>
+<li>Required Octave version number has been raised to 3.8.</li>
+</ul>
+
+<h2>Parameter estimation</h2>
+
+<ul>
+<li><p><code>stk_param_init</code>: The syntax with an additional <code>do_estim_lnv</code>
+parameter is now deprecated.  Set model.lognoisevariance to NaN if
+you want an initial estimate for the variance of the noise.</p></li>
+<li><p><code>stk_param_init_lnv</code>: Refuse noiseless models (error).</p></li>
+<li><p><code>stk_model_gpposterior</code>: Trigger parameter estimation when
+lognoisevariance is NaN.  In the (experimental) case where
+lognoisevariance is a noise model object, parameter estimation is
+triggered as soon as at least one of the optimizable parameters of
+the model is NaN.
+(<a href="https://sourceforge.net/p/kriging/tickets/93/">ticket #93</a>)</p></li>
+<li><p><code>stk_param_relik</code>: Return [] instead of NaN when the derivative with
+respect to lnv is requested for a noiseless model.</p></li>
+<li><p><code>stk_param_relik</code>: Detect duplicated observation points automatically
+and raise an error for noiseless models.</p></li>
+<li><p><code>stk_param_getdefaultbounds</code>: Estimation bounds for the regularity
+parameter of the Matérn covariance function are now customizable through
+the options <code>nu_min_dimfun</code> and <code>nu_max_dimfun</code>.</p></li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li>Deprecated: <code>stk_noisecov</code>.</li>
+</ul>
+
+<h2>Models</h2>
+
+<ul>
+<li><p><code>stk_get_input_data</code>, <code>stk_get_output_data</code>, <code>stk_get_prior_model</code>:
+New getters for model properties, that replace <code>get_input_data</code>,
+<code>get_output_data</code> and <code>get_prior_model</code> respectively (now deprecated).</p></li>
+<li><p><code>stk_get_observation_variances</code>: New getter, which returns the
+vector of variances associated to the observations that have been
+used to build a model.</p></li>
+<li><p><code>stk_gaussiannoise_</code>, <code>stk_gaussiannoise_het0</code>: New classes
+representing Gaussian noise models.  Currently in experimental
+state, these two classes are merely a proof-of-concept.  Other noise
+model classes can be defined by subclassing <code>stk_gaussiannoise_</code>.
+(<a href="https://sourceforge.net/p/kriging/tickets/38/">ticket #38</a>)</p></li>
+<li><p><code>stk_example_misc05</code>: Demonstrate the use of noise model objects
+to estimate the dispersion parameter in an heteroscedatic case.</p></li>
+<li><p><code>stk_simulate_noise</code>: New function to simulate noise sample replicates.</p></li>
+</ul>
+
+<h2><code>stk_dataframe</code> and related classes</h2>
+
+<ul>
+<li><p><code>stk_dataframe</code>: Accept char vectors (or strings) as <code>colnames</code> or
+<code>rownames</code> argument when there is only one column or one row
+(<a href="https://sourceforge.net/p/kriging/tickets/92/">ticket #92</a>)</p></li>
+<li><p><code>@stk_dataframe/sort</code>: Argument <code>dim</code> can now be skipped, as in the
+base <code>sort</code> function.</p></li>
+<li><p><code>@stk_dataframe/unique</code>: Overload base function.</p></li>
+</ul>
+
+<h2>Graphics</h2>
+
+<ul>
+<li><p><code>stk_plot1d</code>: Do not create a legend systematically.
+(<a href="https://sourceforge.net/p/kriging/tickets/82/">ticket #82</a>)</p></li>
+<li><p><code>stk_legend</code>: New function to create a legend, using the graphical
+objects for which a non-empty DisplayName has been provided.</p></li>
+<li><p><code>stk_plot_shadedci</code>: Change gray levels and improve legend.</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_options_set</code>: Make it possible to set all options at once using
+an option structure.  Add help text.</p></li>
+<li><p><code>stk_runtests</code>: Return test results in a structure.</p></li>
+<li><p><code>stk_sampling_nesteddesign</code>: Fix help text.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.5.1</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><code>stk_dominatedhv</code>: Workaround for Octave 4.4 issue
+(<a href="https://sourceforge.net/p/kriging/tickets/89/">ticket #89</a>)</li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p>Documentation fixes.</p></li>
+<li><p><code>stk_option_set</code>: Return option struct only if <code>nargout &gt; 0</code>.</p></li>
+</ul>
+
+<h1>Changes in version 2.5.0</h1>
+
+<h2>Required Octave version</h2>
+
+<ul>
+<li>Required Octave version number has been raised to 3.6.0.</li>
+</ul>
+
+<h2>Sequential design of experiments</h2>
+
+<ul>
+<li><p><code>stk_sampcrit_akg_eval</code>: New function.  Computes the Approximate
+Knowledge Gradient (AKG) sampling criterion.</p></li>
+<li><p><code>stk_example_doe05</code>: Example script that demonstrates the use of the AKG
+and EQI sampling criteria for noisy optimization.</p></li>
+<li><p>New (experimental) classes to represent sampling criterion objects:
+<code>stk_sampcrit_ei</code>, <code>stk_sampcrit_akg</code>, <code>stk_sampcrit_eqi</code>.</p></li>
+<li><p><code>stk_sampcrit_ei_eval</code>: Remove deprecated calling forms.</p></li>
+</ul>
+
+<h2>Design of experiments</h2>
+
+<ul>
+<li><p><code>stk_factorialdesign</code>: Accept one-variable <code>stk_dataframe</code> objects as
+factors and preserve column names in this case.</p></li>
+<li><p><code>stk_sampling_nesteddesign</code>: New function to create nested designs.</p></li>
+<li><p><code>stk_sampling_nestedlhs</code>: New function to create nested LHS (NLHS).</p></li>
+<li><p><code>stk_sampling_sobol</code>: Fix help text.</p></li>
+</ul>
+
+<h2>Validation of models</h2>
+
+<ul>
+<li><p><code>stk_distrib_normal_crps</code>: New function to compare observations and
+predictive (Gaussian) density.</p></li>
+<li><p>Calling <code>stk_predict_leaveoneout</code> with no output arguments now
+automatically creates two cross-validation diagnostics in two subplots:
+prediction VS observations (left panel) and normalized residuals (right
+panel).</p></li>
+<li><p><code>stk_predict_leaveoneout</code> uses now the virtual LOO formula.</p></li>
+</ul>
+
+<h2><code>stk_dataframe</code> and related classes</h2>
+
+<ul>
+<li><p><code>stk_hrect</code>: Preserve column names for <code>stk_dataframe</code> inputs.</p></li>
+<li><p><code>@stk_dataframe/find</code>: Overload base function to support calling find
+with an stk_dataframe as first input argument.</p></li>
+<li><p><code>@stk_dataframe/plotmatrix</code>: Overload base function to enrich
+<code>plotmatrix</code> graphics with variable names when possible.</p></li>
+<li><p>Logical functions</p>
+
+<ul>
+<li><p>Operations that normally return logical (<code>lt</code>, <code>eq</code>, <code>and</code>...) now
+return logical values for <code>stk_dataframe</code> arguments.</p></li>
+<li><p>New overloaded functions for <code>stk_dataframe</code> objects: <code>isinf</code>,
+<code>isnan</code>, <code>isfinite</code>.</p></li>
+</ul></li>
+<li><p>Testing array membership</p>
+
+<ul>
+<li><p><code>@stk_dataframe/ismember</code>: No longer assumes <code>rows</code> flag for
+consistency with the base <code>ismember</code> function.</p></li>
+<li><p><code>stk_factorialdesign/ismember</code>: New function.  Tests membership
+for factorial designs much more efficiently than for plain arrays
+or data frames.</p></li>
+</ul></li>
+<li><p><code>stk_generate_samplepaths</code> now returns a plain numerical array instead of
+a data frame.</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_plot_probdom2d</code>: New function to represent the uncertainty about a
+2D Pareto front.  This function is currently considered experimental and
+should not be expected to produce a reliable representation of the
+uncertainty for difficult or high-dimensional optimization problems.</p></li>
+<li><p>New test case: "truss3" (Koski, 1985; Das, 1997).</p></li>
+<li><p>Many functions have been optimized for speed.</p></li>
+<li><p><code>stk_plot1d</code>: Handle the case where <code>xt</code> is not sorted.</p></li>
+<li><p>Support old-style STK structures (with a <code>.a</code> field) has been removed.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.4.2</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li>Fix display problem of <code>stk_model_gpposterior</code> objects in Octave 4.2
+(ticket #73).</li>
+</ul>
+
+<h1>Changes in version 2.4.1</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p><code>stk_pmisclass</code>: Handle properly the case where <code>K22</code> is negative or
+null.</p></li>
+<li><p><code>stk_get_optimizable_parameters</code>, <code>stk_get_optimizable_parameters</code>: Fix
+syntax errors.</p></li>
+<li><p><code>stk_param_estim</code>: Issue a better error message when <code>LNV0</code> (the starting
+point for the estimation of the lognoisevariance parameter) is either
+<code>NaN</code> of infinite (ticket #72).</p></li>
+</ul>
+
+<h2>Sampling criteria</h2>
+
+<ul>
+<li><p><code>stk_sampcrit_ei_eval</code>: The function now has a new syntax. The other
+syntaxes, introduced (accidentally) in STK 2.4.0, will remain supported
+in 2.4.x, but are deprecated and will be removed in a future release.</p></li>
+<li><p>Unlike the older <code>stk_distrib_normal_ei</code> function, <code>stk_sampcrit_ei_eval</code>
+is written for a <em>minimization</em> problem, following the usual convention
+in optimization software.</p></li>
+<li><p>From now on, it is recommended to use <code>stk_sampcrit_ei_eval</code> instead of
+<code>stk_distrib_normal_ei</code>.</p></li>
+<li><p><code>stk_sampcrit_emmi_eval</code>: Now accepts for the input argument <code>ZI</code> a set
+of observations that contains dominated solutions (rows).  Dominated rows
+and duplicates are removed automatically, as in <code>stk_sampcrit_ehvi_eval</code>.</p></li>
+</ul>
+
+<h2>Documentation</h2>
+
+<ul>
+<li><code>stk_pmisclass</code>, <code>stk_sampcrit_ei_eval</code>, <code>stk_sampcrit_ehvi_eval</code>: Help
+text has been added for all these functions.</li>
+</ul>
+
+<h1>Changes in version 2.4.0</h1>
+
+<h2>Choosing the optimizer used in <code>stk_param_estim</code></h2>
+
+<ul>
+<li><p>The choice of the optimization algorithm used in <code>stk_param_estim</code> is now
+much more flexible, thanks to a new interface based on "optimizer object"
+classes.</p></li>
+<li><p>The following classes are currently available: <code>@stk_optim_octavesqp</code>,
+<code>@stk_optim_fmincon</code>, <code>@stk_optim_fminsearch</code>.</p></li>
+<li><p><code>stk_optim_octavesqp</code> works both in Octave and in Matlab, with two
+possible choices for the QP solver: <code>qp</code> (available in Octave only, this
+is Octave's core <code>qp</code> function) and <code>quadprog</code> (available in Matlab from
+the Optimization toolbox or from MOSEK; should be available in Octave's
+optim package soon).</p></li>
+<li><p>Automatic detection of available optimizers.</p></li>
+<li><p><code>stk_minimize_boxconstrained</code> (new function): Perform box-constrained
+minimization of a function.  This function is overloaded for each
+optimizer object class that supports box-constrained optimization.</p></li>
+<li><p><code>stk_minimize_unconstrained</code> (new function): Perform unconstrained
+minimization of a function.  This function is overloaded for each
+optimizer object class that supports unconstrained optimization.</p></li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li><p>It is now possible to specify default bounds for the estimation of the
+parameters in a user-defined covariance function. See the documentation
+of <code>stk_param_getdefaultbounds</code> for more information.</p></li>
+<li><p>Experimental/undocumented feature: it is possible to provide a
+specialized <code>stk_param_init</code> function for user-defined covariance
+functions.  Read <code>stk_param_init</code> if you need to do this.  (This feature
+might be removed or modified in future releases.)</p></li>
+<li><p>Radial basis functions (old and new):</p>
+
+<ul>
+<li><code>stk_rbf_matern</code>, <code>stk_rbf_matern32</code>, <code>stk_rbf_matern52</code> and
+<code>stk_rbf_gauss</code> (previously available internally as <code>stk_sf_*</code>
+functions).</li>
+<li>New: <code>stk_rbf_exponential</code>, <code>st_rbf_spherical</code>.</li>
+<li>Bugfix: <code>stk_rbf_matern32</code>, <code>stk_rbf_matern52</code> return 0 for very large
+<code>h</code>, where <code>stk_sf_matern32</code> and <code>stk_sf_matern52</code> returned NaN.</li>
+</ul></li>
+<li><p>New covariance functions</p>
+
+<ul>
+<li>Exponential (aka Matérn 1/2): <code>stk_expcov_iso</code>, <code>stk_expcov_aniso</code></li>
+<li>Spherical: <code>stk_sphcov_iso</code>, <code>stk_sphcov_aniso</code></li>
+</ul></li>
+</ul>
+
+<h2>Linear models</h2>
+
+<ul>
+<li><p><code>model.lm</code> and linear model objects (<code>stk_lm_*</code> classes), introduced as
+an experimental feature in STK 2.2.0, are now the recommended way of
+setting the linear part of Gaussian process models.</p></li>
+<li><p><code>model.order</code> is deprecated (but still supported).</p></li>
+<li><p>As an example, the following define a Gaussian process with a Matérn 5/2
+covariance function and a quadratic trend:</p>
+
+<pre><code>model = stk_model ('stk_materncov52_aniso');
+model.lm = stk_lm_quadratic;
+</code></pre></li>
+<li><p><code>stk_lm_polynomial</code> (new function): Create a polynomial model of given
+degree, up to cubic models.</p></li>
+</ul>
+
+<h2><code>stk_model_gpposterior</code> objects</h2>
+
+<ul>
+<li><p>A new <code>stk_model_gpposterior</code> class is introduced to represent a Gaussian
+process conditioned by observations (which is again Gaussian process).</p></li>
+<li><p>Internally, an <code>stk_model_gpposterior</code> object currently stores the QR
+factorization of the associated kriging matrix (other representations
+will be implemented in the future).</p></li>
+<li><p><code>stk_predict</code> is overloaded for <code>stk_model_gpposterior</code> objects.</p></li>
+<li><p><code>stk_model_update</code> (new function): Update a model with new observations.</p></li>
+</ul>
+
+<h2>Space-filling designs</h2>
+
+<ul>
+<li><code>stk_sampling_sobol</code>: New function to generate points from a Sobol
+sequence using the algorithm of Bratley and Fox (1988), as modified by
+Joe and Kuo (2003).  The C implementation under the hood is due to Steven
+G. Johnson, and was borrowed from the NLopt toolbox (version 2.4.2).</li>
+</ul>
+
+<h2>Sampling criterions for sequential designs</h2>
+
+<ul>
+<li><p><code>stk_sampcrit_ei_eval</code> (new function): Compute the expected improvement
+(EI) criterion for single-objective noiseless optimization.</p></li>
+<li><p><code>stk_sampcrit_ehvi_eval</code> (new function): Compute the expect hyper-volume
+improvement (EHVI) criterion (Emmerich, Giannakoglou &amp; Naujoks, 2006) for
+multi-objective noiseless optimization.  This function implements an
+exact computation of the EHVI criterion, using a decomposition of the
+dominated region into hyper-rectangles.</p></li>
+<li><p><code>stk_sampcrit_emmi_eval</code> (new function): Compute the expected maximin
+improvement (EMMI) criterion for multi-objective noiseless optimization
+(Svenson &amp; Santner, 2010).</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_pmisclass</code> (new function): Compute either the current probability of
+misclassification or the expectation of the future probability of
+misclassification, with respect to a given threshold.</p></li>
+<li><p><code>stk_dominatedhv</code> (new function): Compute Pareto-dominated hypervolumes,
+which relies internally on the "Walking Fish Group" (WFG 1.10)
+algorithm. The function can also return the underlying
+inclusion-exclusion representation of the dominated region, i.e., its
+representation as a collection of signed overlapping hyper-rectangles.</p></li>
+<li><p><code>stk_predict_leaveoneout</code>: New function that computes leave-one-out
+predictions and residuals.</p></li>
+<li><p><code>stk_isnoisy</code> (new function): Returns false for a noiseless model and
+true otherwise.</p></li>
+</ul>
+
+<h2>Graphics</h2>
+
+<ul>
+<li><p>All STK functions related to graphics now accept a handle to existing
+axes as optional first input argument, and return a handle (or a vector
+of handles when appropriate) to the graphical object created by the
+function.</p></li>
+<li><p>STK is now compatible with Matlab >= R2014b, where handles to graphical
+objects are not numbers any more.</p></li>
+<li><p><code>stk_plot1d</code>: A nice default legend can now be created painlessly using
+legend ('show'), and a struct of handles to the graphical objects
+composing the plot is returned to facilitate further customization. See,
+e.g., examples 1 and 2 in the "kriging basics" series.</p></li>
+<li><p><code>stk_plot2d</code>: Removed (had been deprecated for a while).</p></li>
+<li><p><code>stk_plot_predvsobs</code> (new function): Plot predictions against observations.</p></li>
+<li><p><code>stk_plot_histnormres</code> (new function): Plot histogram of normalized
+residuals, together with the N(0, 1) pdf as a reference.</p></li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+<li><p><code>stk_example_doe04</code>: Example script that demonstrates the use of
+<code>stk_pmisclass</code>.</p></li>
+<li><p><code>stk_example_kb10</code>: Example script that demonstrates the use of
+leave-one-out cross-validation to produce goodness-of-fit graphical
+diagnostics.</p></li>
+<li><p><code>stk_testfun_borehole</code> (new function): New test function (the "borehole
+model" response function, from Harper &amp; Gupta 1983).</p></li>
+<li><p><code>stk_testfun_twobumps</code> (new function): A simple 1D test function.</p></li>
+<li><p><code>stk_dataset_twobumps</code> (new function): Define three datasets based on the
+TwoBumps test function.</p></li>
+</ul>
+
+<h2>stk_dataframe class</h2>
+
+<ul>
+<li><p>New overloaded functions for stk_dataframe objects: <code>acos</code>, <code>acosd</code>,
+<code>acosh</code>, <code>asin</code>, <code>asind</code>, <code>asinh</code>, <code>atan</code>, <code>atand</code>, <code>atanh</code>, <code>cos</code>,
+<code>cosd</code>, <code>cosh</code>, <code>exp</code>, <code>expm1</code>, <code>log</code>, <code>log10</code>, <code>log1p</code>, <code>log2</code>,
+<code>logical</code>, <code>sin</code>, <code>sind</code>, <code>sinh</code>, <code>sqrt</code>, <code>tan</code>, <code>tand</code>, <code>tanh</code>.</p></li>
+<li><p><code>@stk_dataframe/bsxfun</code>: Now preserve row names if possible.</p></li>
+<li><p><code>@stk_dataframe/openvar</code> (new function): Convert <code>stk_dataframe</code> object
+to table or double array before opening it the variable editor.</p></li>
+<li><p><code>stk_dataframe</code> arrays now accept characters indices (row/column names)
+and cell array indices (list of row/column names).</p></li>
+<li><p>The <code>info</code> field is deprecated.</p></li>
+</ul>
+
+<h2>Other minor changes</h2>
+
+<ul>
+<li><p><code>stk_plot_shadedci</code>: Delete invisible area object.</p></li>
+<li><p><code>@stk_hrect/ismember</code>: Optimize for speed.</p></li>
+<li><p><code>stk_predict</code>: In the case of discrete models, row input vectors are no
+longer accepted.</p></li>
+<li><p><code>stk_runtests</code>: Now also available in the Octave package release, to
+provide a convenient wrapper around <strong>run<em>test</em>suite</strong> ().</p></li>
+<li><p><code>stk_maxabscorr</code>: No longer relies on corr ().</p></li>
+<li><p><code>stk_kreq_qr</code>: Now has a default constructor, which allows to load saved
+<code>stk_kreq_qr</code> objects properly.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.3.4</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p><code>@stk_hrect/ismember</code>: Fix</p>
+
+<ul>
+<li>a bug that prevented <code>ismember</code> from working on more than one point at
+a time, and</li>
+<li>another bug in the case where <code>B</code> is not an <code>stk_hrect</code> object (it was
+incorrectly assumed to be an <code>stk_dataframe</code> in this case).</li>
+</ul></li>
+<li><p><code>@stk_hrect/subsref</code>: Make sure that the returned value is still an
+<code>stk_hrect</code> object when the number of rows (which is two) is unchanged.</p></li>
+</ul>
+
+<h2>Minor changes</h2>
+
+<ul>
+<li><p>Add a <code>clean</code> target to the Octave package Makefile.</p></li>
+<li><p>Decrease unit test verbosity.</p></li>
+</ul>
+
+<h1>Changes in version 2.3.3</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p><code>stk_dist</code>, <code>stk_filldist</code>, <code>stk_gpquadform</code>, <code>stk_mindist</code>: Fix segmentation
+faults occurring with very large matrices (related to signed
+integer-based index computation in the underlying MEX-files).</p></li>
+<li><p><code>stk_example_doe03</code>: Use the appropriate flag for maximization.</p></li>
+<li><p><code>mole/matlab/file_in_path.m</code>: Fix two bugs (Matlab only)</p></li>
+</ul>
+
+<h2>Minor changes</h2>
+
+<ul>
+<li><code>stk_example_doe03</code>: Display pointwise credible intervals in the upper
+panel.</li>
+</ul>
+
+<h1>Changes in version 2.3.2</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p><code>stk_param_estim</code>: Fix a bug related to parameter objects. More
+precisely, use <code>(:)</code> indexing systematically to access the vector of
+numerical parameters corresponding to a given parameter object.</p></li>
+<li><p><code>@stk_kreq_qr/get</code>: Fix a call to <code>dot</code> to make it work when there is
+only one observation.</p></li>
+<li><p>Add missing field "Depends" to the <code>DESCRIPTION</code> file in the Octave
+package.</p></li>
+</ul>
+
+<h2>Minor changes</h2>
+
+<ul>
+<li><p><code>stk_param_getdefaultbounds</code>: Return empty lower and upper bounds for
+parameter classes that do not implement the <code>stk_param_getdefaultbounds</code>
+(instead of calling <code>error</code>).</p></li>
+<li><p>Add optional field "Autoload" to the <code>DESCRIPTION</code> file in the Octave
+package.</p></li>
+</ul>
+
+<h1>Changes in version 2.3.1</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p><code>stk_optim_hasfmincon</code>: Detect <code>fmincon</code> by trying to use it, instead of
+relying on the result of the <code>exist</code> function (ticket #30 closed).</p></li>
+<li><p><code>stk_param_estim</code>: Make sure that the bounds that we use for the <code>lnv</code>
+parameter contain the starting point <code>lnv0</code> when it is provided.</p></li>
+<li><p><code>@stk_dataframe/set</code>: Fix <code>stk_error</code> calls (missing mnemonic).</p></li>
+<li><p><code>stk_distrib_bivnorm_cdf</code>: Fix a bug in the case of mixtures of singular
+and non-singular cases.</p></li>
+<li><p><code>@stk_dataframe/subsasgn</code>: Preserve column names when deleting rows, even
+if the resulting array is empty.</p></li>
+</ul>
+
+<h2>Minor changes</h2>
+
+<ul>
+<li><p><code>stk_init</code>: Clear persistent variables. As a consequence, <code>stk_init</code> can
+now be used to restart STK completely.</p></li>
+<li><p><code>stk_commonsize</code>: Accept empty dimensions, under the condition that all
+input arguments have the same empty dimensions (in which case the result
+is empty).</p></li>
+<li><p><code>stk_commonsize</code>: is now faster when some arguments already have the
+proper size (unnecessary calls to <code>repmat</code> are avoided).</p></li>
+<li><p><code>stk_distrib_normal_cdf</code>, <code>stk_distrib_bivnorm_cdf</code>: are now slightly
+faster (unnecessary calls to <code>stk_commonsize</code> are avoided).</p></li>
+</ul>
+
+<h1>Changes in version 2.3.0</h1>
+
+<h2>Model structures</h2>
+
+<ul>
+<li><p><code>lognoisevariance</code> is now considered a mandatory field. For backward
+compatibility, a missing or empty lognoisevariance field is interpreted
+as <code>-inf</code>. A NaN value in the lognoisevariance field is now interpreted
+as meaning that the variance of the noise must be estimated.</p></li>
+<li><p><code>model.param</code> is set to NaN by <code>stk_model</code>. This special value indicates
+that the parameters must be estimated from the data before any prediction
+can be done.</p></li>
+<li><p>Improved documentation for <code>stk_model</code>.</p></li>
+</ul>
+
+<h2>Parameter estimation</h2>
+
+<ul>
+<li><p><code>stk_param_init</code> defaults to using the input value of
+<code>model.lognoisevariance</code> if it is not NaN, and estimating the variance if
+it is NaN. The meaning of the fifth argument, now called <code>DO_ESTIM_LNV</code>,
+has thus slightly changed: it is used to force or prevent the estimation
+of the variance of the noise, regardless of the value of
+<code>model.lognoisevariance</code>.</p></li>
+<li><p><code>stk_param_init</code> also supports the heteroscedastic noisy case, but only
+when the variance of the noise is assumed to be known.</p></li>
+<li><p><code>stk_param_init_lnv</code> is a new function that provides a rough estimate of
+the variance of the noise (in the spirit of <code>stk_param_init</code>).</p></li>
+<li><p><code>stk_param_estim</code> estimates the variance of the noise if either</p>
+
+<ul>
+<li><code>param0lnv</code> is provided and is not empty (as in STK &lt;= 2.2.0), or</li>
+<li><code>model.lognoisevariance</code> is NaN (new behaviour).</li>
+</ul>
+
+<p><p>If <code>param0lnv</code> is not provided, a starting point is obtained using the
+new <code>stk_param_init_lnv</code> function. In all cases (whether <code>lnv</code> is
+estimated or not) a meaningful value is returned for <code>lnv</code> (equal to
+<code>model.lognoisevariance</code> when <code>lnv</code> is not estimated).</p></li>
+<li><p><code>stk_param_estim</code> can provide a value for <code>param0</code> when it is missing
+from the list of input arguments.</p></li>
+<li><p><code>stk_param_relik</code>: Compute <code>G = W' * K * W</code> in such a way that the result
+is always (?) symmetric.</p></li>
+</ul></p>
+
+<h2>Prediction</h2>
+
+<ul>
+<li><code>stk_predict</code> computes <code>lambda_mu</code> and <code>RS</code> only when necessary, depending on
+the number of output arguments.</li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li><code>stk_noisecov</code> now has a <code>pairwise</code> argument, like the others.</li>
+</ul>
+
+<h2>Sampling</h2>
+
+<ul>
+<li><code>stk_sampling_randunif</code> accepts empty dim argument when <code>box</code> is provided</li>
+</ul>
+
+<h2>Simulation of Gaussian process sample paths</h2>
+
+<ul>
+<li><p><code>stk_generate_samplepaths</code>: Do not add observation noise to the generated
+sample paths. This is consistent with <code>stk_predict</code>, which returns
+posterior variances for the unknown function, not for future noisy
+observations.</p></li>
+<li><p><code>stk_conditioning</code>: Simulate sample paths conditioned on noisy
+observations when the additional <code>NOISE_SIM</code> argument is provided.</p></li>
+<li><p><code>stk_generate_samplepaths</code>: Fix conditioning on noisy observations, which
+was not implemented properly until now.</p></li>
+<li><p><code>stk_generate_samplepaths</code>: The output is an <code>stk_dataframe</code> object if
+either <code>MODEL.response_name</code> exists and is a non-empty string, or one of
+the input arguments (<code>XI</code>, <code>ZI</code>, <code>XT</code>) is an <code>stk_dataframe</code> object.</p></li>
+<li><p><code>stk_conditioning</code>: The output is an <code>stk_dataframe</code> object if either
+<code>LAMBDA</code> or <code>ZSIM</code> is an <code>stk_dataframe</code> object.</p></li>
+</ul>
+
+<h2>Objects representing sets</h2>
+
+<ul>
+<li><p><code>stk_hrect</code>: new class to describe hyper-rectangle objects.</p></li>
+<li><p><code>stk_boundingbox</code>: constructs the bounding box for a set of points.</p></li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+<li><p><code>stk_example_kb04</code> demonstrates how it is possible to estimate the
+variance of the noise without providing a initial guess for it.</p></li>
+<li><p><code>stk_example_kb09</code> demonstrates how to simulate conditional sample paths
+in the case of noisy observations, both in the homoscedastic and in the
+heteroscedastic cases.</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_distrib_bivnorm_cdf</code> computes bivariate normal probabilities.</p></li>
+<li><p><code>stk_disp_progress</code>: New function that displays a textual progress
+indicator.</p></li>
+<li><p><code>stk_feval</code> handles cell-arrays of functions (ticket #19 closed),
+multivariate outputs (ticket #20 closed), and uses vectorized calls by
+default (unless a progress indicator is displayed).</p></li>
+<li><p><code>sort</code>, <code>mtimes</code>, <code>uplus</code> and <code>uminus</code> are now overloaded for
+<code>stk_dataframe</code> objects</p></li>
+<li><p><code>min</code>, <code>max</code> are now able to return a second output argument (index of
+mininizer or maximizer) for <code>stk_dataframe</code> arguments.</p></li>
+<li><p>Now the output of <code>stk_dataframe</code> is always an <code>stk_dataframe</code> object.
+Previously, this wasn't true if the first input argument was, e.g., an
+<code>stk_factorialdesign</code> object.</p></li>
+<li><p><code>stk_distrib_normal_ei</code>, <code>stk_distrib_student_ei</code>: bugfix (the optional
+input argument "minimize" was not taken into account).</p></li>
+<li><p><code>stk_distrib_normal_cdf</code>: Fix the zero-variance case.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.2.1</h1>
+
+<h2>Octave 4.0 compliance</h2>
+
+<ul>
+<li>Fix unit tests</li>
+</ul>
+
+<h2>Octave package</h2>
+
+<ul>
+<li>Do not ship <code>stk_test</code> and <code>stk_runtests</code> with the Octave package</li>
+</ul>
+
+<h1>Changes in version 2.2.0</h1>
+
+<h2>Octave package</h2>
+
+<ul>
+<li>The STK is now available both as an "all-purpose" Matlab/Octave toolbox
+(as usual) and as a full-fledged Octave package that can be installed
+using <code>pkg install</code>.</li>
+</ul>
+
+<h2>Core</h2>
+
+<ul>
+<li><p><code>stk_model</code> now also accepts function handles for <code>covariance_type</code>.</p></li>
+<li><p><code>stk_ortho_func</code> is deprecated and will be completely replaced, in the
+3.x series, by linear model objects. In the meantime, <code>stk_ortho_func</code>
+has been kept as a gateway to <code>stk_lm_*</code> functions and now supports the
+case of cubic polynomial models.</p></li>
+<li><p><code>stk_cholcov</code>: new function that adaptively adds a little bit of noise on
+the diagonal of a covariance matrix to help <code>chol</code> succeed, when the
+first factorization returned by <code>chol</code> is not complete (a warning is
+emitted when doing so). Used in <code>stk_param_init</code>, <code>@stk_kreq_qr/get</code>,
+<code>stk_param_relik</code>...</p></li>
+<li><p><code>@stk_kreq_qr</code>: heuristic improvement of numerical conditioning
+(implemented in the new private function <code>compute_P_scaling</code>).</p></li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li><p>Accept <code>invRho = 0</code> in anisotropic covariance functions.</p></li>
+<li><p><code>stk_sf_matern</code>: Handle special cases (3/2, 5/2, infinity) explicitly,
+and handle large values of the smoothness parameter <code>nu</code> better.</p></li>
+<li><p>Handle the case of Gaussian isotropic and anisotropic covariance
+functions in <code>stk_param_init</code> and <code>stk_param_getdefaultbounds</code>.</p></li>
+</ul>
+
+<h2>Linear models</h2>
+
+<ul>
+<li><p>Introduce linear models objects. Currently, the following linear model
+object classes are available: <code>stk_lm_null</code>, <code>stk_lm_constant</code>,
+<code>stk_lm_affine</code>, <code>stk_lm_quadratic</code>, <code>stk_lm_cubic</code> and <code>stk_lm_matrix</code>.</p></li>
+<li><p>Linear model objects are still considered an experimental feature. They
+can be accessed by setting <code>model.order</code> to NaN, in which case <code>model.lm</code>
+is expected to contain a linear model object.</p></li>
+<li><p><code>stk_example_misc03</code>: New example script that demonstrates the use of
+linear model objects.</p></li>
+</ul>
+
+<h2>Sample path simulation (<code>stk_generate_samplepaths</code>)</h2>
+
+<ul>
+<li><p>The simulation of conditioned sample paths has been made easier (see
+ticket #3 on SF). This is demonstrated by <code>stk_example_kb08</code>.</p></li>
+<li><p>Now uses <code>model.response_name</code> (if available) to create column names for
+the output array, and <code>xt.rownames</code> (if available) to create row names.</p></li>
+<li><p><code>stk_generate_samplepaths</code> can deal with replicated rows in <code>xt</code>.</p></li>
+</ul>
+
+<h2>Parameter estimation</h2>
+
+<ul>
+<li><p><code>stk_param_estim</code></p>
+
+<ul>
+<li>Warn about constant-response data.</li>
+<li>Return an additional <code>info</code> structure, which currently contains the
+criterion that has been used, the criterion value at the optimum, and
+the bounds.</li>
+<li>Add a new (optional) input argument that will make it possible,
+in the future, to select which estimation criterion to use.</li>
+</ul></li>
+<li><p><code>stk_param_relik</code></p>
+
+<ul>
+<li>Check symmetry of <code>G = W' * K * W</code> and apply a naive fix if it is not
+(emit a warning when doing so).</li>
+<li>Improved implementation, which seems to reduce the number of warnings
+related to bad conditioning, and also improve the performance for
+large <code>n</code> (about 1000, say).</li>
+</ul></li>
+<li><p>New optimization options (can bet set through <code>stk_options_set</code>)</p>
+
+<ul>
+<li>Add global options to control upper/lower bounds for <code>stk_param_estim</code>.</li>
+<li>(Matlab) Add a <code>optim_display_level</code> option to control the verbosity
+<code>fmincon</code>/<code>fminsearch</code>. Its default value is <code>'off'</code>.</li>
+</ul></li>
+<li><p><code>stk_param_gls</code>: new function that computes the GLS estimator.</p></li>
+</ul>
+
+<h2>Array objects (<code>stk_dataframe</code>, <code>stk_factorialdesign</code>)</h2>
+
+<ul>
+<li><p><code>stk_length</code>: New function that returns the "length" of an array,
+currently defined as its number of rows.</p></li>
+<li><p>Improved display for both <code>stk_dataframe</code> and <code>stk_factorial</code> objects</p></li>
+<li><p>Fix and improve accessors (<code>subsasgn</code>, <code>subsref</code>, <code>set</code>, <code>get</code>,
+<code>fieldnames</code>)</p></li>
+<li><p>Minimalist support for linear indexing on <code>stk_dataframe</code> objects</p></li>
+<li><p>New overloaded methods: <code>@stk_dataframe/abs</code>, <code>@stk_dataframe/reshape</code></p></li>
+<li><p><code>@stk_dataframe/plot</code>: Full rewrite to improve compatibility with the
+base plot function. The case where <code>x</code> is an <code>stk_dataframe</code> objects with
+two or more columns is now handled in a way that is consistent with the
+base plot function (i.e., if <code>x</code> has two columns, then we get two 1D
+plots).</p></li>
+<li><p><code>@stk_dataframe/horzcat</code>, <code>@stk_dataframe/vertcat</code>: Now the result is
+always an <code>stk_dataframe</code> object, and has row names iff either one of the
+two arguments doesn't have row names, or the row names of both arguments
+agree.</p></li>
+<li><p><code>@stk_dataframe/bsxfun</code>: Modify the behaviour of <code>bsxfun</code> for
+<code>stk_dataframe</code> objects. The result is always an <code>stk_dataframe</code> object,
+and has column names iff either one of the two arguments doesn't have
+columns names or the columns names of both arguments agree.</p></li>
+</ul>
+
+<h2>Graphics</h2>
+
+<ul>
+<li><p><code>stk_plot2d</code> is deprecated and will be removed in the 3.x series. Use
+<code>contour</code>, <code>mesh</code>, <code>surf</code>... directly instead (they are now overloaded
+for <code>stk_factorialdesign</code> objects).</p></li>
+<li><p><code>stk_plot1d</code>: Improved flexibility in the way input arguments are
+handled.</p></li>
+<li><p><code>stk_figure</code> does not set the axis title any more.</p></li>
+</ul>
+
+<h2>Pareto domination</h2>
+
+<ul>
+<li><p><code>stk_isdominated</code>: New function that returns true for dominated rows.</p></li>
+<li><p><code>stk_paretofind</code>: New function that finds non-dominated points.</p></li>
+<li><p><code>stk_example_misc04</code>: New example script illustrating random Pareto fronts.</p></li>
+</ul>
+
+<h2>Faster and less verbose startup</h2>
+
+<ul>
+<li><p>Stop bothering users at startup with information that they can find in
+the <code>README</code> file anyway.</p></li>
+<li><p>Don't display selected optimizers at startup.</p></li>
+<li><p>In Matlab, don't bother checking if the PCT is installed.</p></li>
+</ul>
+
+<h2>Documentation</h2>
+
+<ul>
+<li><p>New HTML documentation, available in the "all-purpose" Matlab/Octave
+release (doc/html directory) and online on Source-Forge at
+<a href="http://kriging.sourceforge.net/htmldoc">http://kriging.sourceforge.net/htmldoc</a>.</p></li>
+<li><p>Lots of fixes and improvements in help texts.</p></li>
+<li><p>Add a <code>CITATION</code> file, which explains how to cite STK in publications.</p></li>
+<li><p><code>stk_testfun_braninhoo</code>: Fix domain bounds in the documentation.</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p>Options set/get</p>
+
+<ul>
+<li><code>stk_options_set</code>: Add a reset feature.</li>
+<li><code>stk_options_set</code>: Prevent persistent from being cleared (bugfix)</li>
+</ul></li>
+<li><p>Remove <code>page_screen_output</code> (not needed anymore).</p></li>
+<li><p>Restore the <code>stk_</code> prefix for <code>distrib_*</code> functions (<code>distrib_normal_cdf</code>
+is renamed to <code>stk_distrib_normal_cdf</code>, <code>distrib_student_ei</code> to
+<code>stk_distrib_student_ei</code>, etc.)</p></li>
+<li><p>Lots of internal changes, minor changes, etc. not worth mentioning here.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.1.1</h1>
+
+<h2>Bug fix</h2>
+
+<ul>
+<li>Fix a bug in <code>stk_param_init</code>.</li>
+</ul>
+
+<h2>Minor changes</h2>
+
+<ul>
+<li><p>Add size checks to several functions.</p></li>
+<li><p>Warn Octave users about the problem with MEX-files in privates folders:
+Octave must be restarted when <code>stk_init</code> is run for the first time.</p></li>
+</ul>
+
+<h1>Changes in version 2.1.0</h1>
+
+<h2>How to get help</h2>
+
+<ul>
+<li>Several ways to get help, report bugs or ask for new features on
+Sourceforge are now proposed to the user (both in <code>README</code> or
+<code>stk_init.m</code>)</li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+<li><p>Existing examples have been improved: descriptions rewritten; graphical
+options controlled globally thanks to dedicated plotting functions
+(<code>stk_figure</code>; <code>stk_subplot</code>, <code>stk_axes</code>, <code>stk_title</code>...); + lots of
+minor changes</p></li>
+<li><p>New examples</p>
+
+<ul>
+<li>kb06: ordinary kriging VS linear trend</li>
+<li>kb07: simulations of Matérn sample paths with different various <code>nu</code></li>
+<li>doe03: one-dimensional Bayesian optimization (expected improvement)</li>
+</ul></li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li><p>New function: <code>stk_gausscov_iso</code> (isotropic Gaussian covariance model)</p></li>
+<li><p>New function: <code>stk_gausscov_aniso</code> (anisotropic Gaussian covariance model)</p></li>
+</ul>
+
+<h2>Special functions</h2>
+
+<ul>
+<li><p>The precision of <code>stk_sf_matern</code> has been improved around 0 for high <code>nu</code></p></li>
+<li><p>New function: <code>stk_sf_gausscorr</code> (Gaussian correlation function in 1D)</p></li>
+</ul>
+
+<h2>Design of experiments</h2>
+
+<ul>
+<li><p>New function: <code>stk_phipcrit</code> (phi_p criterion for space-filling designs)</p></li>
+<li><p>New function: <code>stk_maxabscorr</code> (maximal pairwise absolute correlation)</p></li>
+</ul>
+
+<h2>Probability distributions</h2>
+
+<ul>
+<li><p>A new 'probability distributions' module has been initiated (read
+<code>misc/distrib/README</code> to understand the reasons why)</p></li>
+<li><p>Currently provides: pdf, cdf and expected improvement (EI) for the
+Gaussian and Student t distributions</p></li>
+</ul>
+
+<h2>Matlab/Octave compatibility</h2>
+
+<ul>
+<li><p>Matlab/Octave compatibility throughout all supported releases has been
+strengthened, thanks to the creation of a Matlab/Octave Language
+Extension (MOLE) module</p></li>
+<li><p>octave_quantile removed; instead, a replacement for <code>quantile</code> is
+provided by the MOLE when needed.</p></li>
+<li><p>new function <code>graphicstoolkit</code>, providing a kind of replacement for
+<code>graphics_toolkit</code>, that also work in Matlab and old Octave releases</p></li>
+<li><p>...</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>stk_plot1dsim</code> has been removed (use <code>stk_plot1d</code> instead)</p></li>
+<li><p>plotting functions now work directly on the current axes</p></li>
+<li><p>An optional <code>box</code> argument has been added to <code>stk_sampling_halton_rr2</code></p></li>
+<li><p><code>stk_feval</code> now uses input row names for its output</p></li>
+</ul>
+
+<h2>Bugfixes</h2>
+
+<ul>
+<li><p><code>@stk_kreq_qr/stk_update</code> is now (inefficient but) working</p></li>
+<li><p><code>isequal</code> is now working for <code>stk_dataframe</code> and <code>stk_kreq_qr</code> objects in
+Octave 3.2.x (explicit overloading was required for these old releases)</p></li>
+<li><p>and many other tiny little things</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 2.0.3</h1>
+
+<h2>Bug fix</h2>
+
+<ul>
+<li>Fix a bug <code>core/stk_predict.m</code> (related to blockwise computations)</li>
+</ul>
+
+<h1>Changes in version 2.0.2</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p>Fix a bug in <code>@stk_dataframe/subsref</code> (handle colnames properly when
+()-indexing is used to extract a subset of rows).</p></li>
+<li><p>Fix a bug in <code>@stk_dataframe/stk_dataframe</code> (make sure that <code>.data</code>
+contains numerical data) and add a copy constructor.</p></li>
+</ul>
+
+<h1>Changes in version 2.0.1</h1>
+
+<h2>Bug fixes</h2>
+
+<ul>
+<li><p>Fix a bug in <code>stk_predict</code> (don't compute the optional outputs <code>lambda</code>
+and <code>mu</code> when they are not requested by the caller).</p></li>
+<li><p>Fix a bug in <code>stk_sampling_olhs</code> (fail neatly when called with n = 2).</p></li>
+</ul>
+
+<h1>Changes in version 2.0.0</h1>
+
+<h2>Required Octave version number</h2>
+
+<ul>
+<li>Required Octave version number has been raised to 3.2.2.</li>
+</ul>
+
+<h2>Important changes to the public API</h2>
+
+<ul>
+<li><p>New R-like data structures: <code>@stk_dataframe</code>, <code>@stk_factorial_design</code>.</p></li>
+<li><p>The structures previously used everywhere in STK (with a <code>.a</code> field) are
+still supported but should be considered as deprecated (and will probably
+be completely removed in the next major release).</p></li>
+<li><p>As a result, <code>stk_predict</code> does not return a <code>.a</code>/<code>.v</code> structure any
+more. Instead, it returns an stk_dataframe object with two variables
+called <code>mean</code> and <code>var</code>.</p></li>
+<li><p>The function that computes (the opposite of the log of) the restricted
+likelihood is now called <code>stk_param_relik</code> instead of <code>stk_remlqrg</code>.</p></li>
+</ul>
+
+<h2>Internal structure</h2>
+
+<ul>
+<li><p>Many improvements in the internal structure of STK, for the sake of
+clarity (for those who happen to read the code) and efficiency:</p></li>
+<li><p><code>@stk_kreq_qr</code>: new class for encapsulating basic computations related to
+a Gaussian process (kriging) model.</p></li>
+<li><p>The old <code>Kx_cache</code>/<code>Px_cache</code> mechanism, for working efficiently on
+finite spaces, has been replaced by a new covariance function:
+<code>stk_discretecov</code>.</p></li>
+<li><p>A new framework to encapsulate various approaches to parallel
+computations. Currently only supporting <code>'none'</code> or <code>'parfor'</code>
+(Mathworks' PCT toolbox parfor loops) engines, more to come later.</p></li>
+</ul>
+
+<h2>Experimental support for parameter objects.</h2>
+
+<ul>
+<li><p><code>model.param</code> is now allowed to be an object from a user-defined
+class. This feature is experimental, and not really used currently in the
+toolbox.</p></li>
+<li><p>A new function <code>stk_param_getdefaultbounds</code> has appeared in <code>./param</code>,
+that was previously hidden in <code>stk_predict</code>. It can be overridden in the
+case where <code>model.param</code> is an object from a user-defined class.</p></li>
+</ul>
+
+<h2>New sampling algorithms and related functions</h2>
+
+<ul>
+<li><p>Fill-distance computation: exact (using Pronzato &amp; Müller, Statistics &amp;
+Computing, 2011) or approximate (using a space-filling reference set).</p></li>
+<li><p>Van Der Corput and Halton RR2-scrambled sequences (quasi-MC)</p></li>
+<li><p>NOLHS designs (Cioppa &amp; Lucs, Technometrics, 2007)</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p><code>misc/options</code>: a new system for managing options</p></li>
+<li><p><code>octave_quantile</code>: replacement for the missing <code>quantile</code> function in
+base Matlab (Mathworks' Statistics toolbox is not a requirement of STK).</p></li>
+<li><p>Add MEX-files for computing "Gibbs-Paciorek quadratic forms" to support
+future work on non-stationary covariance functions.</p></li>
+<li><p><code>AUTHORS</code>: a list of maintainers and contributors can now be found at the
+root of the source tree.</p></li>
+<li><p><code>stk_compile_all</code>: now recompiles MEX-files automatically if the source code
+has changed.</p></li>
+<li><p>Various new utility functions, tiny or not-so-tiny improvements,
+bugfixes here and there...</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 1.2</h1>
+
+<h2><code>stk_predict</code></h2>
+
+<ul>
+<li><p>Now offers the possibility to compute the posterior covariance matrix (it
+is returned as a fourth optional argument).</p></li>
+<li><p>Has been modified to work with non-stationary covariance functions.</p></li>
+</ul>
+
+<h2>Covariance functions</h2>
+
+<ul>
+<li>Added a new <code>"pairwise"</code> option to all covariance functions and also to
+<code>stk_dist</code> (formerly <code>stk_distance_matrix</code>). This options allows to
+compute only the diagonal of the full distance/covariance matrix).</li>
+</ul>
+
+<h2>Space-filling designs</h2>
+
+<ul>
+<li><p>New function (<code>stk_filldist</code>) to compute the (discretized) fill distance.</p></li>
+<li><p>New function (<code>stk_sampling_olhs</code>) to generate Orthogonal Latin Hypercube
+(OLH) samples using the algorithm of Ye (1998).</p></li>
+</ul>
+
+<h2>Parameter estimation</h2>
+
+<ul>
+<li>New (experimental) function to choose automatically the starting point
+for a parameter estimation optimization procedure (<code>stk_param_init</code>).</li>
+</ul>
+
+<h2>New functions to work with boxes</h2>
+
+<ul>
+<li><p><code>stk_rescale</code>,</p></li>
+<li><p><code>stk_normalize</code>.</p></li>
+</ul>
+
+<h2>More flexible representation of data</h2>
+
+<ul>
+<li><p>Improved the flexibility most functions (<code>stk_predict</code>,
+<code>stk_param_estim</code>, ...), which are now accepting both matrices and "data
+structures" (with an <code>.a</code> field) as input arguments.</p></li>
+<li><p>New function: <code>stk_datastruct</code></p></li>
+</ul>
+
+<h2>Regular grids</h2>
+
+<ul>
+<li><p>New function <code>stk_plot2d</code> that serves has a wrapper around
+{<code>surf</code>|<code>contour</code>|<code>mesh</code>|<code>pcolor</code>}-type functions, to plot data defined
+over a two-dimensional regular grid.</p></li>
+<li><p><code>stk_sampling_regulargrid</code> now also returns 'ndgrid-style' coordinate
+matrices stored in new <code>.coord</code> field.</p></li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+<li><p>Reorganized the example folder and renamed all example scripts.</p></li>
+<li><p>New example (<code>stk_example_misc03</code>) to demonstrate the effect of adding a
+prior on the covariance parameters.</p></li>
+<li><p>Improved graphical outputs in <code>stk_example_kb03</code>.</p></li>
+<li><p>New test function: <code>stk_testfun_braninhoo</code> (Branin-Hoo).</p></li>
+</ul>
+
+<h2>Miscellaneous</h2>
+
+<ul>
+<li><p>Renamed <code>stk_distancematrix</code> to <code>stk_dist</code>.</p></li>
+<li><p>Various new utility functions: <code>stk_runexamples</code>, <code>stk_disp_framedtext</code>,
+<code>stk_disp_examplewelcome</code>, <code>stk_plot_shadedci</code>, <code>stk_octave_config</code>.</p></li>
+<li><p>Improved Octave-specific configuration.</p></li>
+<li><p>Lots of bugfixes and improvements.</p></li>
+</ul>
+
+<hr />
+
+<h1>Changes in version 1.1</h1>
+
+<ul>
+<li><p>New special functions for the Matérn 3/2 and 5/2 correlation functions
+(<code>stk_sf_matern32</code>, <code>stk_sf_matern52</code>). New covariance functions
+(<code>stk_materncov32_iso</code>, <code>stk_materncov32_aniso</code>, ...).</p></li>
+<li><p>New MEX-file to compute the separation distance (<code>stk_mindist</code>).</p></li>
+<li><p>New function to generate random Latin Hypercube Samples
+(<code>stk_sampling_randomlhs</code>).  Renamed <code>stk_sampling_cartesiangrid</code> to
+<code>stk_sampling_regulargrid</code>, and changed the meaning of the first argument
+for consistency with other <code>stk_sampling_*</code> functions.</p></li>
+<li><p>Improved <code>stk_model</code> function. Now provides default parameters for several
+families of covariance functions.</p></li>
+<li><p>Renamed fields in model structures (<code>covariance_cache</code> to <code>Kx_cache</code> and <code>P0</code>
+to <code>Px_cache</code>). A new field <code>dim</code> has been added to the model structure.</p></li>
+<li><p>Changed the order of the arguments of the functions that use the
+structure <code>model</code>. Now, <code>model</code> is always the first argument.</p></li>
+<li><p>Changed <code>stk_param_estim</code> to make it possible to estimate noise variance.</p></li>
+<li><p>Fixed issues in <code>stk_param_estim</code> related to the definition of the search
+domain and the selection of (constrained/unconstrained) optimizer.</p></li>
+<li><p>Renamed <code>stk_conditionning</code> to <code>stk_conditioning</code>.</p></li>
+<li><p>New functions for a more flexible and efficient management of STK's
+configuration in <code>stk_init</code> (path, compilation of MEX-file, checking for
+optional packages, selection of the default optimizer, ...).</p></li>
+<li><p>New functions for unit testing, based on Octave's testing system
+(<code>stk_test</code>, <code>stk_runtests</code>). Tests have been added to most functions in
+the toolbox.</p></li>
+<li><p>Improved documentation &amp; new examples.</p></li>
+<li><p>Improved argument checking and error messages.</p></li>
+<li><p>Improved compatibility with older versions of Octave and Matlab.</p></li>
+<li><p>Lots of minor changes and bug fixes.</p></li>
+<li><p>Complete reorganization of the code (better directory structure).</p></li>
+</ul>
+
+
+
+</div>
+</body>
+</html>
+

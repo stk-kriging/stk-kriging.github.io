@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="01-Jul-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_TESTCASE_TRUSS3 provides information about the 'truss3' test case
+
+ CALL: TC = stk_testcase_truss3 ()
+
+    returns a structure TC that describes the 'truss3' test case, borrowed
+    from [1, chapter 9].  This structure contains two fields:
+
+     * .constants: all the numerical constants for this problem,
+
+     * .search_domain: an stk_hrect object that specifies the search
+       domain of the optimization problem.
+
+ TEST CASE OVERVIEW
+
+    The system considered in this test case is the following 3-bar truss:
+
+                 <---------  D  ----------->
+                 <--- w --->
+           ------A==========B==============C------
+                  \_        |           __/    ^
+                    \_      | (2)    __/       |
+                      \_    |     __/          L
+                   (1)  \_  |  __/   (3)       |
+                          \_P_/                v
+
+    Nodes A, B and C are fixed (pin joints).  Node P is submitted to both
+    an horizontal load F1 (e.g., wind) and a vertical load F2 (suspended
+    load).
+
+    The design variables are the cross-sections a1, a2 and a3 of the three
+    bars, and the horizontal position w of the vertical bar.  The
+    quantities of interest are the total volume of the structure, the
+    mechanical (tensile) stress in the bars, and the displacement of P.
+    Various formulations of optimization problems can be considered,
+    depending on which quantities are selected as contraints and
+    objectives, and whether or not uncertainties are taken into account
+    (robust formulations).
+
+ NUMERICAL CONSTANTS
+
+    The numerical values borrowed from [1] have been converted to SI
+    units.  The fields of TC.constants are:
+
+     *       .D: truss width [m],
+     *       .L: length of the vertical bar [m],
+     *       .E: Young's modulus [Pa],
+
+     *   .a_min: minimal cross-section [m^2],
+     *   .a_max: maximal cross-section [m^2],
+     *   .w_min: minimal value of the position of the vertical bar [m],
+     *   .w_max: maximal value of the position of the vertical bar [m],
+
+     * .F1_mean: mean (nominal) value of the horizontal load [N],
+     *  .F1_std: standard deviation of the horizontal load [N],
+     * .F2_mean: mean (nominal) value of the vertical load [N]
+     *  .F2_std: standard deviation of the vertical load [N].
+
+    The standard deviations F1_std and F2_std are used in the formulation
+    of robust optimization problems [see 1, chap 11].
+    
+ NUMERICAL FUNCTIONS
+
+    Two numerical functions are provided to compute the quantities of
+    interest of this test case:
+
+     * stk_testfun_truss3_vol: computes the total volume of the structure,
+
+     * stk_testfun_truss3_bb: computes the tensile stress in the bars and
+       the displacement of P.
+
+    Both functions have the same syntax:
+
+       V = stk_testfun_truss3_vol (X, CONST)
+
+       Z = stk_testfun_truss3_bb (X, CONST)
+
+    where CONST is a structure containing the necessary numerical
+    constants.  To use the constants from [1], pass TC.constants as
+    second input argument.
+
+    Both functions accept as first input argument an N x D matrix
+    (or data frame) where D is either 4 or 6:
+
+     * columns 1--3: cross-section a1, a2 and a3,
+
+     * column 4: position w of the horizontal bar,
+
+     * column 5-6 (optional): horizontal and vertical loads F1, F2.
+
+    The second function is named 'bb' for 'black box', as it plays the
+    role of a (supposedly expensive to evaluate) black box computer model
+    for this test case.  The output Z has five columns, corresponding to:
+
+     * columns 1--2: horizontal and vertical displacement y1, y2 of P,
+
+     * columns 3--5: tensile stress sigma_j in bars j = 1, 2 and 3.
+
+ EXAMPLE
+
+     tc = stk_testcase_truss3 ();  n = 5;
+
+     % Draw 5 points uniformly in the 4D input domain ("design space")
+     xd = stk_sampling_randunif (n, [], tc.search_domain)
+
+     % Compute the volumes
+     v = stk_testfun_truss3_vol (xd, tc.constants)
+
+     % Compute displacements and stresses for nominal loads
+     z = stk_testfun_truss3_bb (xd, tc.constants)
+
+     % Draw loads from normal distributions
+     F = stk_dataframe (zeros (n, 2), {'F1' 'F2'});
+     F(:, 1) = tc.constants.F1_mean + tc.constants.F1_std * randn (n, 1);
+     F(:, 2) = tc.constants.F2_mean + tc.constants.F2_std * randn (n, 1);
+
+     % Compute displacements and stresses for the random loads
+     x = [xd F]
+     z = stk_testfun_truss3_bb (x, tc.constants)
+
+ REFERENCE
+
+  [1] Indraneel Das,  Nonlinear Multicriteria Optimization and Robust
+      Optimality.  PhD thesis,  Rice University,  1997.
+
+  [2] Juhani Koski,   Defectiveness of weighting method in multicriterion
+      optimization of structures.  Int. J. for Numerical Methods in
+      Biomedical Engineering,  1(6):333-337,  1985.
+
+ See also: stk_testfun_truss3_vol, stk_testfun_truss3_bb
+</pre>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta http-equiv="content-type"
+ content="text/html; charset=utf-8" />
+
+<meta name="date"
+ content="01-Jul-2023"/>
+
+<meta name="author"
+ content="Julien Bect and Emmanuel Vazquez" />
+
+<meta name="description"
+ content="Function reference for STK: a Small (Matlab/Octave) Toolbox for Kriging." />
+
+<meta name="keywords" lang="en"
+ content="kriging, Gaussian processes, Matérn covariance, design and analysis of computer experiments" />
+
+<title>STK: a Small (Matlab/Octave) Toolbox for Kriging</title>
+
+<link rel="stylesheet" type="text/css" href="../css/stk.css" />
+
+</head>
+
+<body>
+
+<div class="header">
+  <table><tr>
+    <td id="logo">
+      <a class="linkToIndex" href ="../index.html">
+        <img src="../images/stk_logo.png" alt="Octave logo" />
+      </a>
+    </td>
+    <td id="title">
+      <a class="linkToIndex" href ="../index.html">
+        <b>STK</b>: a <b>S</b>mall (Matlab/Octave)
+        <b>T</b>oolbox for <b>K</b>riging
+      </a>
+    </td>
+  </tr></table>
+</div>
+
+<div id="doccontent">
+
+<pre> STK_TESTFUN_HARTMAN3 computes the "Hartman3" function
+
+    The Hartman3 function is a test function in dimension 3, which is
+    part of the famous Dixon & Szego benchmark [1] in global optimization.
+
+    It is usually minimized over [0, 1]^3.
+
+ HISTORICAL REMARKS
+
+    This function belongs to a general class of test functions
+    introduced by Hartman [2], hence the name.
+
+    The particular set of coefficients used in the definition of the
+    "Hartman3" function, however, seems to have been introduced by [1].
+
+ GLOBAL MINIMUM
+
+    According to [5], the function has one global minimum at
+
+       x = [0.1, 0.55592003, 0.85218259].
+
+    The corresponding function value is:
+
+       f(x) = -3.862634748621772.
+
+    A slightly lower value is attained [4] at
+
+       x = [0.114614 0.554649 0.852547].
+
+    The corresponding function value is:
+
+       f(x) = -3.862747199255087
+
+    The exact global optimum does not appear to be known.
+
+ REFERENCES
+
+  [1] L. C. W. Dixon & G. P. Szego (1978).  Towards Global
+      Optimization 2, North-Holland, Amsterdam, The Netherlands
+
+  [2] J. K. Hartman (1973).  Some experiments in global optimization.
+      Naval Research Logistics Quarterly, 20(3):569-576.
+
+  [3] V. Picheny, T. Wagner & D. Ginsbourger (2013).  A benchmark
+      of kriging-based infill criteria for noisy optimization.
+      Structural and Multidisciplinary Optimization, 48:607-626.
+
+  [4] S. Surjanovic & D. Bingham.  Virtual Library of Simulation
+      Experiments: Test Functions and Datasets.  Retrieved March 3,
+      2022, https://www.sfu.ca/~ssurjano/hart4.html.
+
+  [5] O. Roustant, D. Ginsbourger & Y. Deville (2012).
+      DiceKriging package, version 1.6.0 from 2021-02-23
+      URL: https://cran.r-project.org/web/packages/DiceKriging/index.html
+</pre>
+
+</div>
+</body>
+</html>
